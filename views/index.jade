@@ -1,0 +1,22 @@
+extends layout
+
+block content
+    h1= title
+    p Welcome to #{title}
+    div(id="number") Please Wait
+    div
+        input(type="text" id="num")
+        button(id="send" type="button") SEND
+
+    script.
+        var socket = io('http://localhost:3000');
+        var obj;
+        socket.on('rundomnumber', function (data) {
+            obj = $.parseJSON(data);
+            $("#number").text(obj.number);
+        });
+        $("#send").on("click", function () {
+            var obj2 = obj.number + ' - ' + $("#num").val();
+            socket.emit('submit', obj2);
+            console.log();
+        })
